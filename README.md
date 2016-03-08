@@ -9,5 +9,5 @@ Toolbox to create **S**mooth **a**nd **n**onlinear **d**ata-driven **C**ollectiv
 
 ### Dependencies:
 - Intel Math Kernel Library (MKL)
-- TCL [tcl-dev] (Only for "Interfaces")
-- Swig [swig2.0] (Only for "Interfaces")
+- TCL \[tcl-dev\] (Only for "Interfaces")
+- Swig \[swig2.0\] (Only for "Interfaces")
