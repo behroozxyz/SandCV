@@ -1,0 +1,47 @@
+
+int ClosestPointProjection::FindClosestPoint()
+{
+    while (1)
+    {
+//        _bSeed = true;
+        if (_bSeed)
+        {
+            /* Search in high-dimensional space to find a seed for TR */
+            _idxSeed = _highDimSearch->FindNearestNeighbors( _xSample ).at(0);
+//            cout<<"distance = "<<_highDimSearch->GetNearestDistances().at(0)<<endl;
+            seedIter = _xiSeeds.begin()+_idxSeed*_ldim;
+            copy( seedIter, seedIter+_ldim, _xiVal.begin() );
+//            cout<<"seed("<<_idxSeed<<") ["<<_xiVal.at(0)<<" , "<<_xiVal.at(1)<<"]"<<endl;
+            ++_nTakenSeeds;
+        }
+        /* Perfotm a least square fit with trust region algorithm*/
+        if ( this->MinimizeWithTrustRegion() )
+        {
+            _xiVal = _xiValOld;
+            cerr<<__func__<<" >> The previous value is taken as the solution."<<endl;
+            cout<<"Failiure = "<<_xiVal.at(0)<<" , "<<_xiVal.at(1)<<""<<endl;
+            return this->CalculateJacobian();
+//            if (_bSeed)
+//            {
+//                /* If the high-dimensional seed was used, we cannot do any thing more,
+//                  so take that seed as the solution and return error */
+//                cerr<<__func__<<" >> Minimizer was failed."<<endl;
+
+//                copy( seedIter, seedIter+_ldim, _xiVal.begin() );
+//                cerr<<__func__<<" >> The seed value is taken as the solution."<<endl;
+//                cout<<"Failiure   = "<<_xiVal.at(0)<<" , "<<_xiVal.at(1)<<""<<endl;
+
+//                this->CalculateJacobian();
+//                return 1;
+//            }
+//            else
+//                _bSeed = true;
+        }
+        else
+        {
+                _bSeed = false;
+                _xiValOld = _xiVal;
+                return this->CalculateJacobian();
+        }
+    }
+}
